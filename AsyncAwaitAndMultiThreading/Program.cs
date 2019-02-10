@@ -44,13 +44,12 @@ namespace AsyncAwaitAndMultiThreading
             Console.ReadKey(true);
         }
 
-        //await means method suspention and going back to caller.If there is an await which calls another async method having another await inside,
+        //await means method suspention and going back to caller. If there is an await which calls another async method having another await inside,
         //the control will drill down till the last await and then go back to caller of the root await.
         //there is no parallel execution going on here, the only difference between a sync method and this async method having multiple await is releasing of
         //the threads (main thread if windows app or console app, thread pool thread if web app) and going back to the caller and execute rest of the 
         //independentely executable code and be ready for the task to complete and come back.
         //So we have greater number of threads available in our thread pool and our Application sclability increases.
-
         public static async Task<string> AgreegateServiceCallAsyncMultypleAwaiter()
         {
             Console.WriteLine("AgreegateServiceCallAsyncMultypleAwaiter strats");
@@ -62,18 +61,6 @@ namespace AsyncAwaitAndMultiThreading
             var quote = await QuoteInfoAsync();
 
             var pref = await PrefDataAsync();
-
-            //if you want to swallow an exception or write another call inside
-            // remem "() => {}" == "methodName() {}"
-
-            //var pref = PrefDataAsync().ContinueWith(async (t) => {
-            //    if (t.IsFaulted || t.IsCanceled || !t.IsCompleted)
-            //    {
-            //        await LogExeption();
-            //    }
-            //});
-
-            //await pref;
 
             Console.WriteLine("AgreegateServiceCallAsyncMultypleAwaiter ends");
 
@@ -206,7 +193,6 @@ namespace AsyncAwaitAndMultiThreading
                 clientNumber, Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread);
         }
         #endregion
-
 
         //there is no difference between await and ContinueWith, when we do a Continuation on a task that task has to be completed
         //inorder for the ContinueWith code block to get executed. The first task gets passed as a parameter of the second task eg. t
