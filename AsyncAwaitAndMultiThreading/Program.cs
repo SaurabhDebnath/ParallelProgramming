@@ -169,7 +169,11 @@ namespace AsyncAwaitAndMultiThreading
         //takes 8 sec
         public static string AgreegateServiceCallParallelly()
         {
-            //here we have parallelized the sequential code, now we have 3 tasks which if we have enough cores, will run in parallel
+            //here we have parallelized the sequential code, now we have 3 tasks which will run in parallel. But in reality waht happens is all the 3 threads
+            //will run under same CPU core. So we will get an illusion of parallalism but what actually happening is call time slicing. If we really want to run things
+            // in parallel, we will have to use Parallel.Foreach
+            // https://stackoverflow.com/questions/5009181/parallel-foreach-vs-task-factory-startnew/5009224
+            // https://www.youtube.com/watch?v=No7QqSc5cl8&ab_channel=.NETInterviewPreparationvideos
             var t1 = Task.Run(() => { FetchData(1); });
             var t2 = Task.Run(() => FetchData(2));
             var t3 = Task.Run(() => FetchData(3));
