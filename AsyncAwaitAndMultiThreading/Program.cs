@@ -159,9 +159,9 @@ namespace AsyncAwaitAndMultiThreading
         //takes 16 sec
         public static string AgreegateServiceCall()
         {
-            var One = FetchData(1);
-            var Two = FetchData(2);
-            var Three = FetchData(3);
+            var One = RunAMillionIterations(1);
+            var Two = RunAMillionIterations(2);
+            var Three = RunAMillionIterations(3);
 
             return ("Task finished \n" + One + "\n " + Two + "\n " + Three);
         }
@@ -174,9 +174,9 @@ namespace AsyncAwaitAndMultiThreading
             // in parallel, we will have to use Parallel.Foreach
             // https://stackoverflow.com/questions/5009181/parallel-foreach-vs-task-factory-startnew/5009224
             // https://www.youtube.com/watch?v=No7QqSc5cl8&ab_channel=.NETInterviewPreparationvideos
-            var t1 = Task.Run(() => { FetchData(1); });
-            var t2 = Task.Run(() => FetchData(2));
-            var t3 = Task.Run(() => FetchData(3));
+            var t1 = Task.Run(() => { RunAMillionIterations(1); });
+            var t2 = Task.Run(() => RunAMillionIterations(2));
+            var t3 = Task.Run(() => RunAMillionIterations(3));
 
             //you can't do Task.WhenAll() because its an sync method. which means your method will continue when everything's completed, 
             //and will tie up a thread to just hang around until that time.
@@ -185,10 +185,8 @@ namespace AsyncAwaitAndMultiThreading
             return ("Task finished \n" + t1 + "\n " + t2 + "\n " + t3);
         }
 
-        static string FetchData(int clientNumber)
+        static string RunAMillionIterations(int clientNumber)
         {
-            var client = new WebClient();
-            string data = client.DownloadString("https://jsonplaceholder.typicode.com");
             for (int i = 0; i < 1000000000; i++)
             {
                 int j = i + 4;
